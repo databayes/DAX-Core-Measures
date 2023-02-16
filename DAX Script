@@ -1,0 +1,71 @@
+------------------------------
+-- Measure: [# Total Quantity]
+------------------------------
+MEASURE 'Core Measures'[# Total Quantity] = SUM( 'Sales'[Order Quantity] )
+    Description = "Expression:
+SUM('Sales'[Order Quantity])"
+    DisplayFolder = "_Measures"
+    FormatString = "0"
+
+---------------------------
+-- Measure: [# Total Sales]
+---------------------------
+MEASURE 'Core Measures'[# Total Sales] = COUNTROWS( 'Sales' )
+    Description = "Expression:
+COUNTROWS(Sales)"
+    DisplayFolder = "_Measures"
+    FormatString = "0"
+
+-----------------------------
+-- Measure: [% Profit Margin]
+-----------------------------
+MEASURE 'Core Measures'[% Profit Margin] = DIVIDE( [£ Profit], [£ Total Sales] )
+    Description = "Expression:
+DIVIDE([£ Profit], [£ Total Sales])"
+    DisplayFolder = "_Measures"
+
+----------------------------------
+-- Measure: [£ High Revenue Sales]
+----------------------------------
+MEASURE 'Core Measures'[£ High Revenue Sales] = 
+    // show total sales for those sales greater than 20,000
+    CALCULATE(
+        [£ Total Sales],
+        FILTER( 'Sales', [£ Total Sales] > 20000 )
+    )
+    Description = "Expression:
+
+// show total sales for those sales greater than 20,000
+CALCULATE([£ Total Sales], 
+FILTER(Sales, [£ Total Sales] > 20000))"
+    DisplayFolder = "_Measures"
+    FormatString = """£""#,0;-""£""#,0;""£""#,0"
+
+----------------------
+-- Measure: [£ Profit]
+----------------------
+MEASURE 'Core Measures'[£ Profit] = [£ Total Sales] - [£ Total Costs]
+    Description = "Expression:
+[£ Total Sales] - [£ Total Costs]"
+    DisplayFolder = "_Measures"
+
+---------------------------
+-- Measure: [£ Total Costs]
+---------------------------
+MEASURE 'Core Measures'[£ Total Costs] = 
+    SUMX(
+        'Sales',
+        'Sales'[Total Unit Cost] * 'Sales'[Order Quantity]
+    )
+    Description = "Expression:
+SUMX('Sales', 'Sales'[Total Unit Cost] * 'Sales'[Order Quantity])"
+    DisplayFolder = "_Measures"
+
+---------------------------
+-- Measure: [£ Total Sales]
+---------------------------
+MEASURE 'Core Measures'[£ Total Sales] = SUM( 'Sales'[Total Revenue] )
+    Description = "Expression:
+SUM('Sales'[Total Revenue])"
+    DisplayFolder = "_Measures"
+    FormatString = """£""#,0;-""£""#,0;""£""#,0"
